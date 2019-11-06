@@ -8,19 +8,19 @@ A Clojure APP to read stdin until receive an empty line.
 
 - Install Docker 18+
 
-** Building a uberjar **
+**Building a uberjar**
 
 ```bash
 ./docker-build.sh
 ```
 
-** Building a native executable **
+**Building a native executable**
 
 ```bash
 ./docker-build-native.sh
 ```
 
-** To run **
+**To run**
 
 ```bash
 ./docker-run.sh
@@ -31,13 +31,13 @@ A Clojure APP to read stdin until receive an empty line.
 - Install Java 1.8+
 - Install Leiningen 2.9+
 
-** Builing a uberjar **
+**Builing a uberjar**
 
 ```bash
 lein do clean, uberjar
 ```
 
-** To run **
+**To run**
 
 ```bash
 java -jar target/app.jar < input.txt
