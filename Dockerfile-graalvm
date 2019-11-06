@@ -1,0 +1,25 @@
+# To build the uberjar
+FROM clojure:openjdk-11-lein-2.9.1-slim-buster as build-jar
+ENV HOMEDIR /usr/app/userin
+WORKDIR $HOMEDIR
+ADD . $HOMEDIR
+RUN lein do clean, uberjar
+
+# To build the native
+FROM oracle/graalvm-ce:19.2.1 as build-ntv
+ENV HOMEDIR /usr/app/userin
+WORKDIR $HOMEDIR
+RUN gu install native-image
+COPY --from=build-jar /usr/app/userin/target/app.jar .
+RUN native-image -jar ./app.jar \
+    -H:Name=./userin \
+    --report-unsupported-elements-at-runtime \
+    --initialize-at-build-time
+
+# App image
+FROM oraclelinux:7-slim
+ENV HOMEDIR /usr/app/userin
+WORKDIR $HOMEDIR
+COPY --from=build-ntv /usr/app/userin/userin /usr/bin/
+RUN chmod +x /usr/bin/userin
+ENTRYPOINT ["userin"]

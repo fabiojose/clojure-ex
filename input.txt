@@ -1,0 +1,15 @@
+hello
+fábio
+josé
+de
+moraes
+,
+esse
+é 
+apenas
+um
+teste 
+para 
+leitura
+do stdin
+
