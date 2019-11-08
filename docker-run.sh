@@ -1,1 +1,1 @@
-cat ./input.txt | docker run -i --rm userin:1.0.0
+cat ./input.json | docker run -i --rm userin:1.0.0
