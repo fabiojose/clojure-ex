@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/fabiojose/clojure-ex.svg?branch=master)](https://travis-ci.org/fabiojose/clojure-ex)
+[![codecov](https://codecov.io/gh/fabiojose/clojure-ex/branch/master/graph/badge.svg)](https://codecov.io/gh/fabiojose/clojure-ex)
 
 # userin
 
