@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [userin.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest test-is-a-text
+  (testing "Should return false when text is not valid"
+    (is (= (is-a-text "") false))
+    (is (= (is-a-text nil) false))))
