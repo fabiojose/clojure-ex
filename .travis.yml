@@ -5,7 +5,7 @@ script:
 - lein test
 after_success:
 - CLOVERAGE_VERSION=1.0.7-SNAPSHOT lein cloverage --codecov
-- bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash) -f target/coverage/codecov.json
 env:
   global:
     secure: h+Xk9JFjJZAq9Vt/QUn85Ejub/DgOKp4h5AlrlN+anqPZuHl89zQZoY+CywV82GQ4X84nAnOTCZQkpJQYKzSPP3MxGpx0dNwf1BblOBgpW0DoIKQWjz9jDH6q1EOqrQWPLzQWqlunFzmEZBR493WZQk2Hj7b+GCtlV6OrS+m0jLiObhSUryBen4DGV/MsPrEe1L9k9RxIMpgYCJ4UxMgqKOcWT/7AnreYHhDfFIWvy6GVpF/02dlglHc1griK+5Q9CHszZl7pK/ITAXKQCSw8SS+jj3L85VbsvSWqrL/ewGmqUyavX6rsneO/0B0Szi/B9eav3qFU3Mx5JjcaKq/rdbHt6AbmzYi4spVeR5FmU2gcr0Mgms3nJMZ7RmkeKOPvqdqGk2dDGSrVxP4hV9cCSzIsmgPPntY0T3zZyNnoZZLqjapfXOQvN3kWcuW311cDL6Uh52f3fVDHREcSkLDozD5+pdFuYGDrbs6HV7rE5mnxKRTOrZsrTHanrVLht6xLhsMfQKOEvQLTDZn851VCoAmUNS2+BMxlPW83oCvV/kT90NNikRF5BvzYCqJx2YeqLTrAoLv/1/hU4wvxhk9scS4CKSWv67EtEqwgzrIJThCaA2k7XU5r9dcx1Ait+7S3b1Ux2g+vAzrvczwGorH8rFy5yPUCcdvFzMU0U5Z3ro=
