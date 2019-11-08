@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fabiojose/clojure-ex.svg?branch=master)](https://travis-ci.org/fabiojose/clojure-ex)
+
 # userin
 
 A Clojure APP to read stdin until receive an empty line.
