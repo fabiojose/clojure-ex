@@ -8,7 +8,7 @@
 (defn read-all []
   (loop [line (read-line)]
     (when (and (not (= line "")) (not (= line nil)))
-      (println line)
+      (println (parse line))
       (recur (read-line)))))
 
 (defn -main
