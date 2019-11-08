@@ -5,9 +5,12 @@
 (defn parse [value]
   (parse-string value true))
 
+(defn is-a-text [text]
+  (and (not (= text "")) (not (= text nil))))
+
 (defn read-all []
   (loop [line (read-line)]
-    (when (and (not (= line "")) (not (= line nil)))
+    (when (is-a-text line)
       (println (parse line))
       (recur (read-line)))))
 
