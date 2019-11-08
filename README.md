@@ -40,13 +40,13 @@ lein do clean, uberjar
 **To run**
 
 ```bash
-java -jar target/app.jar < input.txt
+java -jar target/app.jar < input.json
 ```
 
 Or, run using Leiningen
 
 ```bash
-lein run < input.txt
+lein run < input.json
 ```
 
 ## License
