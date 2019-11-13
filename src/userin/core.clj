@@ -14,6 +14,14 @@
 (defn is-account [json]
   (contains? json :account))
 
+;; to get the available limit of given account
+(defn limit-of [account]
+  (get-in account [:account :availableLimit]))
+
+;; to get the amount to given transaction
+(defn amount-of [tx]
+  (get-in tx [:transaction :amount]))
+
 ;; to check if a given account has an active card
 (defn is-card-active [account]
   (if (get-in account [:account :activeCard])
@@ -21,12 +29,14 @@
     (assoc account :violations ["card-not-active"])))
 
 ;; to check if a given account has limit to process the tx amount
-; (defn has-limit [tx account]
-;   (if (get-in account [:account :availableLimit])))
+(defn has-limit [tx account]
+  (if (< (limit-of account) (amount-of tx))
+    (assoc account :violations ["insufficient-limit"])
+    (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))))
 
 ;; to check if a given tx should be authorized over an account
 (defn authorize [tx account]
-  (is-card-active account))
+  (has-limit tx (is-card-active account)))
 
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
@@ -50,8 +60,9 @@
 
 (defn read-all3 []
   (loop [line (read-line) account nil]
+    (println account)
     (when (is-a-text line)
-      (println line account)
+      ;;(println line account)
       (recur (read-line) (decide (json-parse line) account)))))
 
 ;; the main function
