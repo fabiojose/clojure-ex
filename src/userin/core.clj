@@ -22,21 +22,36 @@
 (defn amount-of [tx]
   (get-in tx [:transaction :amount]))
 
+;; to check if a given account has violations
+(defn has-violations [account]
+  (contains? account :violations))
+
+;; to print the account and throw the exception
+(defn print-and-throw [account]
+  (println (generate-string account))
+  (throw (Exception. "violations found")))
+
+;; to throw an exception when found violations whitin a given account
+(defn error-on-violations [account]
+  (if (has-violations account)
+    (print-and-throw account)
+    account))
+
 ;; to check if a given account has an active card
 (defn is-card-active [account]
   (if (get-in account [:account :activeCard])
     account
     (assoc account :violations ["card-not-active"])))
 
-;; to check if a given account has limit to process the tx amount
-(defn has-limit [tx account]
+;; to check if a given account has limit to process the tx amount and use it
+(defn use-limit [tx account]
   (if (< (limit-of account) (amount-of tx))
     (assoc account :violations ["insufficient-limit"])
     (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))))
 
 ;; to check if a given tx should be authorized over an account
 (defn authorize [tx account]
-  (has-limit tx (is-card-active account)))
+  (use-limit tx (error-on-violations (is-card-active account))))
 
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
