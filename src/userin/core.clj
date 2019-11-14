@@ -62,18 +62,6 @@
 
 ;; to read stdin until end
 (defn read-all []
-  (loop [line (read-line)]
-    (when (is-a-text line)
-      (decide (json-parse line))
-      (recur (read-line)))))
-
-(defn read-all2 []
-  (loop [line (read-line) account nil]
-    (when (is-a-text line)
-      (println (json-parse line) account)
-      (recur (read-line) (if (is-account (json-parse line)) (json-parse line) account) ))))
-
-(defn read-all3 []
   (loop [line (read-line) account nil]
     (println account)
     (when (is-a-text line)
@@ -83,4 +71,4 @@
 ;; the main function
 (defn -main
   [& args]
-  (read-all3))
+  (read-all))
