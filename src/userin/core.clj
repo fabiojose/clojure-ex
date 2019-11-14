@@ -53,10 +53,16 @@
 (defn authorize [tx account]
   (error-on-violations (use-limit tx (error-on-violations (is-card-active account)))))
 
+;; to check if we alread have an initialized account
+(defn already-initialized [json account]
+  (if (contains? account :account)
+    (assoc account :violations ["account-already-initialized"])
+    json))
+
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
   (cond
-    (contains? json :account) json
+    (contains? json :account) (error-on-violations (already-initialized json account))
     (contains? json :transaction) (authorize json account)
     :else (throw (Exception. (str "unsupported json: " json)))))
 
