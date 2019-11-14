@@ -51,7 +51,7 @@
 
 ;; to check if a given tx should be authorized over an account
 (defn authorize [tx account]
-  (use-limit tx (error-on-violations (is-card-active account))))
+  (error-on-violations (use-limit tx (error-on-violations (is-card-active account)))))
 
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
