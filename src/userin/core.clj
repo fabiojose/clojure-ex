@@ -68,14 +68,16 @@
   [tx account]
   (sufficient-limit tx (is-card-active account)))
 
-;; to check if we alread have an initialized account
-(defn already-initialized [json account]
+(defn already-initialized
+  "to check if we already have an initialized account"
+  [json account]
   (if (contains? account :account)
     (assoc account :violations ["account-already-initialized"])
     json))
 
-;; to decide what gonna do with parsed json
-(defn decide [json account]
+(defn decide
+  "to decide what gonna do with parsed json"
+  [json account]
   (cond
     (contains? json :account) (already-initialized json account)
     (contains? json :transaction) (authorize json account)
