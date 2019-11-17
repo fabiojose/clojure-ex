@@ -2,32 +2,39 @@
   (:gen-class)
   (:require [cheshire.core :refer :all]))
 
-;; to parse given value as json
-(defn json-parse [value]
+(defn json-parse
+  "to parse given value as json"
+  [value]
   (parse-string value true))
 
-;; to check if a given arg is a valid text
-(defn is-a-text [text]
+(defn is-a-text
+  "to check if a given arg is a valid text"
+  [text]
   (and (not (= text "")) (not (= text nil))))
 
-;; to check if a given json is an account object
-(defn is-account [json]
+(defn is-account
+  "to check if a given json is an account object"
+  [json]
   (contains? json :account))
 
-;; to get the available limit of given account
-(defn limit-of [account]
+(defn limit-of
+  "to get the available limit of given account"
+  [account]
   (get-in account [:account :availableLimit]))
 
-;; to get the amount to given transaction
-(defn amount-of [tx]
+(defn amount-of
+  "to get the amount to given transaction"
+  [tx]
   (get-in tx [:transaction :amount]))
 
-;; to check if a given account has violations
-(defn has-violations [account]
+(defn has-violations
+  "to check if a given account has violations"
+  [account]
   (contains? account :violations))
 
-;; to print the account and throw the exception
-(defn print-and-throw [account]
+(defn print-and-throw
+  "to print the account and throw the exception"
+  [account]
   (println (generate-string account))
   (throw (Exception. "violations found")))
 
@@ -83,15 +90,16 @@
     (contains? json :transaction) (authorize json account)
     :else (throw (Exception. (str "unsupported json: " json)))))
 
-;; to read stdin until end
-(defn read-all []
+(defn read-all
+  "to read stdin until it ends"
+  []
   (loop [line (read-line) account nil]
     (println account)
     (when (is-a-text line)
       ;;(println line account)
       (recur (read-line) (print-when-violations (decide (json-parse line) account))))))
 
-;; the main function
 (defn -main
+  "the main function"
   [& args]
   (read-all))
