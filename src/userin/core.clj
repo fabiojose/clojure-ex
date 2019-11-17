@@ -45,17 +45,35 @@
     account
     (assoc account :violations ["card-not-active"])))
 
+; (defn use-limit
+;   "to check if a given account has limit to process the tx amount and use it"
+;   [tx account]
+;   (if (< (limit-of account) (amount-of tx))
+;     (assoc account :violations ["insufficient-limit"])
+;     (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx))) ))
+
+(defn assoc-tx
+  "associates a given tx in the authorized vector of given account"
+  [tx account]
+  (assoc account :authorized (conj (get account :authorized) tx)))
+
 (defn use-limit
-  "to check if a given account has limit to process the tx amount and use it"
+  "to use the limit of given account to process the tx amount"
+  [tx account]
+  (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))
+  (assoc-tx tx account))
+
+(defn sufficient-limit
+  "to check if a given account has sufficient limit to process the given tx"
   [tx account]
   (if (< (limit-of account) (amount-of tx))
     (assoc account :violations ["insufficient-limit"])
-    (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))))
+    (use-limit tx account)))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (use-limit tx (is-card-active account)))
+  (sufficient-limit tx (is-card-active account)))
 
 ;; to check if we alread have an initialized account
 (defn already-initialized [json account]
