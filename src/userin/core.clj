@@ -38,20 +38,23 @@
     (println (generate-string account))
     account))
 
-;; to check if a given account has an active card
-(defn is-card-active [account]
+(defn is-card-active
+  "to check if a given account has an active card"
+  [account]
   (if (get-in account [:account :activeCard])
     account
     (assoc account :violations ["card-not-active"])))
 
-;; to check if a given account has limit to process the tx amount and use it
-(defn use-limit [tx account]
+(defn use-limit
+  "to check if a given account has limit to process the tx amount and use it"
+  [tx account]
   (if (< (limit-of account) (amount-of tx))
     (assoc account :violations ["insufficient-limit"])
     (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))))
 
-;; to check if a given tx should be authorized over an account
-(defn authorize [tx account]
+(defn authorize
+  "to check if a given tx should be authorized over an account"
+  [tx account]
   (print-when-violations (use-limit tx (print-when-violations (is-card-active account)))))
 
 ;; to check if we alread have an initialized account
