@@ -55,7 +55,7 @@
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (print-when-violations (use-limit tx (print-when-violations (is-card-active account)))))
+  (use-limit tx (is-card-active account)))
 
 ;; to check if we alread have an initialized account
 (defn already-initialized [json account]
@@ -66,7 +66,7 @@
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
   (cond
-    (contains? json :account) (print-when-violations (already-initialized json account))
+    (contains? json :account) (already-initialized json account)
     (contains? json :transaction) (authorize json account)
     :else (throw (Exception. (str "unsupported json: " json)))))
 
@@ -76,7 +76,7 @@
     (println account)
     (when (is-a-text line)
       ;;(println line account)
-      (recur (read-line) (decide (json-parse line) account)))))
+      (recur (read-line) (print-when-violations (decide (json-parse line) account))))))
 
 ;; the main function
 (defn -main
