@@ -45,13 +45,6 @@
     account
     (assoc account :violations ["card-not-active"])))
 
-; (defn use-limit
-;   "to check if a given account has limit to process the tx amount and use it"
-;   [tx account]
-;   (if (< (limit-of account) (amount-of tx))
-;     (assoc account :violations ["insufficient-limit"])
-;     (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx))) ))
-
 (defn assoc-tx
   "associates a given tx in the authorized vector of given account"
   [tx account]
