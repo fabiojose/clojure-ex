@@ -31,10 +31,11 @@
   (println (generate-string account))
   (throw (Exception. "violations found")))
 
-;; to throw an exception when found violations whitin a given account
-(defn error-on-violations [account]
+(defn print-when-violations
+  "write at the console when violations are present"
+  [account]
   (if (has-violations account)
-    (print-and-throw account)
+    (println (generate-string account))
     account))
 
 ;; to check if a given account has an active card
@@ -51,7 +52,7 @@
 
 ;; to check if a given tx should be authorized over an account
 (defn authorize [tx account]
-  (error-on-violations (use-limit tx (error-on-violations (is-card-active account)))))
+  (print-when-violations (use-limit tx (print-when-violations (is-card-active account)))))
 
 ;; to check if we alread have an initialized account
 (defn already-initialized [json account]
@@ -62,7 +63,7 @@
 ;; to decide what gonna do with parsed json
 (defn decide [json account]
   (cond
-    (contains? json :account) (error-on-violations (already-initialized json account))
+    (contains? json :account) (print-when-violations (already-initialized json account))
     (contains? json :transaction) (authorize json account)
     :else (throw (Exception. (str "unsupported json: " json)))))
 
