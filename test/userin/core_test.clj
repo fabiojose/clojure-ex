@@ -38,3 +38,7 @@
   (testing "Should return the account after print"
     (is (= (print-when-violations {:account {}}) {:account {}}))
     (is (= (print-when-violations {:account {} :violations ()}) {:account {} :violations ()}))))
+
+(deftest test-card-active
+  (testing "Should return the account when card is active"
+    (is (= (card-active {:account {:activeCard true}}) {:account {:activeCard true}}))))
