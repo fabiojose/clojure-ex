@@ -23,5 +23,9 @@
     (is (= (is-account {:account "yep"})))))
 
 (deftest test-limit-of-account
-  (testing "Shoudl return the availableLimit of account"
+  (testing "Should return the availableLimit of account"
     (is (= (limit-of {:account {:availableLimit 100}}) 100))))
+
+(deftest test-amount-of-tx
+  (testing "Should return the amount of transaction"
+    (is (= (amount-of {:transaction {:amount 200}}) 200))))
