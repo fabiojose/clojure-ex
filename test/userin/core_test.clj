@@ -33,3 +33,8 @@
 (deftest test-has-violations
   (testing "Should return true when has :violations"
     (is (= (has-violations {:account {} :violations ()}) true))))
+
+(deftest test-print-when-violations
+  (testing "Should return the account after print"
+    (is (= (print-when-violations {:account {}}) {:account {}}))
+    (is (= (print-when-violations {:account {} :violations ()}) {:account {} :violations ()}))))
