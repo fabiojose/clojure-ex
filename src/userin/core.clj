@@ -33,16 +33,16 @@
   (contains? account :violations))
 
 (defn print-out
-  "write the value as json in the console and return it"
-  [value]
-  (println (generate-string value))
-  value)
+  "write the account as json in the console and return the account"
+  [account]
+  (println (generate-string (dissoc account :authorized)))
+  account)
 
 (defn print-when-violations
   "write the account in the console when violations are present"
   [account]
   (if (has-violations account)
-    (print-out (dissoc account :authorized))
+    (print-out account)
     account))
 
 (defn is-card-active
