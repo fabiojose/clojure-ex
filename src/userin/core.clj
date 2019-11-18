@@ -32,12 +32,6 @@
   [account]
   (contains? account :violations))
 
-(defn print-and-throw
-  "to print the account and throw the exception"
-  [account]
-  (println (generate-string account))
-  (throw (Exception. "violations found")))
-
 (defn print-when-violations
   "write at the console when violations are present"
   [account]
