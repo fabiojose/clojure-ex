@@ -45,7 +45,7 @@
     (print-out account)
     account))
 
-(defn is-card-active
+(defn card-active
   "to check if a given account has an active card"
   [account]
   (if (get-in account [:account :activeCard])
@@ -73,7 +73,7 @@
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (sufficient-limit tx (is-card-active account)))
+  (sufficient-limit tx (card-active account)))
 
 (defn already-initialized
   "to check if we already have an initialized account"
