@@ -78,7 +78,7 @@
 (defn already-initialized
   "to check if we already have an initialized account"
   [json account]
-  (if (contains? account :account)
+  (if (get-in account [:account :activeCard])
     (assoc account :violations ["account-already-initialized"])
     json))
 
