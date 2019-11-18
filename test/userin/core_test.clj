@@ -29,3 +29,7 @@
 (deftest test-amount-of-tx
   (testing "Should return the amount of transaction"
     (is (= (amount-of {:transaction {:amount 200}}) 200))))
+
+(deftest test-has-violations
+  (testing "Should return true when has :violations"
+    (is (= (has-violations {:account {} :violations ()}) true))))
