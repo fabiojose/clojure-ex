@@ -42,7 +42,7 @@
   "write at the console when violations are present"
   [account]
   (if (has-violations account)
-    (println (generate-string account))
+    (println (generate-string (dissoc account :authorized)))
     account))
 
 (defn is-card-active
