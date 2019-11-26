@@ -1,6 +1,7 @@
 (ns userin.core-test
   (:require [clojure.test :refer :all]
-            [userin.core :refer :all]))
+            [userin.core :refer :all]
+            [java-time :as j]))
 
 (deftest test-json-parse
   (testing "Should return a parsed json"
@@ -29,6 +30,10 @@
 (deftest test-amount-of-tx
   (testing "Should return the amount of transaction"
     (is (= (amount-of {:transaction {:amount 200}}) 200))))
+
+(deftest test-parse-tx
+  (testing "Should parse the time field"
+    (is (= {:transaction {:time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}} (parse-tx {:transaction {:time "2019-02-13T10:00:00.000Z"}})))))
 
 (deftest test-has-violations
   (testing "Should return true when has :violations"
