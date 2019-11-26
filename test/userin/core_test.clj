@@ -54,3 +54,7 @@
 (deftest test-sufficient-limit
   (testing "Should return the new availableLimit and the authorized key with list of tx"
     (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5}}]} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10}})))))
+
+(deftest test-no-sufficient-limit
+  (testing "Shoudl return violations when has no sufficient limit"
+    (is (= {:account {:availableLimit 10} :violations ["insufficient-limit"]} (sufficient-limit {:transaction {:amount 15}} {:account {:availableLimit 10}})))))
