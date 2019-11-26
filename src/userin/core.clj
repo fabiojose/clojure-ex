@@ -65,9 +65,11 @@
 (defn sufficient-limit
   "to check if a given account has sufficient limit to process the given tx"
   [tx account]
-  (if (< (limit-of account) (amount-of tx))
-    (assoc account :violations ["insufficient-limit"])
-    (assoc-tx tx (use-limit tx account))))
+  (if (not (contains? account :violations))
+    (if (< (limit-of account) (amount-of tx))
+      (assoc account :violations ["insufficient-limit"])
+      (assoc-tx tx (use-limit tx account)))
+    account))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
