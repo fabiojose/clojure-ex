@@ -42,3 +42,7 @@
 (deftest test-card-active
   (testing "Should return the account when card is active"
     (is (= (card-active {:account {:activeCard true}}) {:account {:activeCard true}}))))
+
+(deftest test-card-inactive
+  (testing "Should return violations when card is inactive"
+    (is (= (card-active {:account {:activeCard false}}) {:account {:activeCard false} :violations ["card-not-active"]}))))
