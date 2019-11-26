@@ -46,3 +46,7 @@
 (deftest test-card-inactive
   (testing "Should return violations when card is inactive"
     (is (= (card-active {:account {:activeCard false}}) {:account {:activeCard false} :violations ["card-not-active"]}))))
+
+(deftest test-use-limit
+  (testing "Should return the available limit after usage"
+    (is (= (use-limit {:transaction {:amount 5}} {:account {:availableLimit 10}}) {:account {:availableLimit 5}}))))
