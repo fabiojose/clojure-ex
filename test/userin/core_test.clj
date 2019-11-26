@@ -60,9 +60,7 @@
     (is (= {:account {:availableLimit 10} :violations ["insufficient-limit"]} (sufficient-limit {:transaction {:amount 15}} {:account {:availableLimit 10}})))))
 
 (deftest test-already-initialized
-  (testing "Should return violations when account activeCard is true"
+  (testing "Should return violations when account already exists"
     (is (= {:account {:activeCard true} :violations ["account-already-initialized"]} (already-initialized {:account {:activeCard true}} {:account {:activeCard true}}))))
   (testing "Should return the json when account is nil"
-    (is (= {:account {:activeCard true}} (already-initialized {:account {:activeCard true}} nil))))
-  (testing "Should return true for activeCard when account activeCard is false")
-    (is (= {:account {:activeCard true} :authorized []} (already-initialized {:account {:activeCard true}} {:account {:activeCard false} :authorized []}))))
+    (is (= {:account {:activeCard true}} (already-initialized {:account {:activeCard true}} nil)))))
