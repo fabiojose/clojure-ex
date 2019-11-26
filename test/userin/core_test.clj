@@ -50,3 +50,7 @@
 (deftest test-use-limit
   (testing "Should return the available limit after usage"
     (is (= (use-limit {:transaction {:amount 5}} {:account {:availableLimit 10}}) {:account {:availableLimit 5}}))))
+
+(deftest test-sufficient-limit
+  (testing "Should return the new availableLimit and the authorized key with list of tx"
+    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5}}]} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10}})))))
