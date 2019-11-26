@@ -60,15 +60,14 @@
 (defn use-limit
   "to use the limit of given account to process the tx amount"
   [tx account]
-  (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx)))
-  (assoc-tx tx account))
+  (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx))))
 
 (defn sufficient-limit
   "to check if a given account has sufficient limit to process the given tx"
   [tx account]
   (if (< (limit-of account) (amount-of tx))
     (assoc account :violations ["insufficient-limit"])
-    (use-limit tx account)))
+    (assoc-tx tx (use-limit tx account))))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
