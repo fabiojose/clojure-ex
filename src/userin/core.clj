@@ -79,7 +79,9 @@
   [json account]
   (if (get-in account [:account :activeCard])
     (assoc account :violations ["account-already-initialized"])
-    json))
+    (if (empty? account)
+      json
+      (assoc-in account [:account :activeCard] true))))
 
 (defn decide
   "to decide what gonna do with parsed json"
