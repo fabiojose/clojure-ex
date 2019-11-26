@@ -1,6 +1,7 @@
 (ns userin.core
   (:gen-class)
-  (:require [cheshire.core :refer :all]))
+  (:require [cheshire.core :refer :all])
+  (:require [java-time :as j]))
 
 (defn json-parse
   "to parse given value as json"
@@ -51,6 +52,11 @@
   (if (get-in account [:account :activeCard])
     account
     (assoc account :violations ["card-not-active"])))
+
+(defn parse-tx
+  "parses a given tx"
+  [tx]
+  (assoc-in tx [:transaction :time] (j/zoned-date-time (get-in tx [:transaction :time]))))
 
 (defn assoc-tx
   "associates a given tx in the authorized vector of given account"
