@@ -58,7 +58,7 @@
 
 (deftest test-sufficient-limit
   (testing "Should return the new availableLimit and the authorized key with list of tx"
-    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5}}]} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10}}))))
+    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}]} (sufficient-limit {:transaction {:amount 5 :time "2019-02-13T10:00:00.000Z"}} {:account {:availableLimit 10}}))))
   (testing "Should return the same account when has violations"
     (is (= {:account {:availableLimit 10} :violations []} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10} :violations []})))))
 
@@ -71,3 +71,7 @@
     (is (= {:account {:activeCard true} :violations ["account-already-initialized"]} (already-initialized {:account {:activeCard true}} {:account {:activeCard true}}))))
   (testing "Should return the json when account is nil"
     (is (= {:account {:activeCard true}} (already-initialized {:account {:activeCard true}} nil)))))
+;
+; (deftest test-get-item
+;   (testing "Should return the right item"
+;     (is (= 6 (get-it-reverse [4 5 6 7] 2)))))
