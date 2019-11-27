@@ -98,7 +98,7 @@
     :else (throw (Exception. (str "unsupported json: " json)))))
 
 (defn read-all
-  "to read stdin until it ends"
+  "to read stdin until its end"
   []
   (loop [line (read-line) account nil]
     (println account)
