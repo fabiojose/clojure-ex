@@ -61,7 +61,7 @@
 (defn assoc-tx
   "associates a given tx in the authorized vector of given account"
   [tx account]
-  (assoc account :authorized (conj (get account :authorized) tx)))
+  (assoc account :authorized (conj (get account :authorized) (parse-tx tx))))
 
 (defn use-limit
   "to use the limit of given account to process the tx amount"
