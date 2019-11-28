@@ -79,3 +79,7 @@
     (is (empty? (get-it-reverse [4 5 6 7] 5))))
   (testing "Should return nil when list is empty"
     (is (empty? (get-it-reverse [] 3)))))
+
+(deftest test-time-diff-tx
+  (testing "Should return the right amount of time"
+    (is (= 2 (j/as (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}} {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}) :minutes) ))))
