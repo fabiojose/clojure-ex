@@ -71,7 +71,11 @@
     (is (= {:account {:activeCard true} :violations ["account-already-initialized"]} (already-initialized {:account {:activeCard true}} {:account {:activeCard true}}))))
   (testing "Should return the json when account is nil"
     (is (= {:account {:activeCard true}} (already-initialized {:account {:activeCard true}} nil)))))
-;
-; (deftest test-get-item
-;   (testing "Should return the right item"
-;     (is (= 6 (get-it-reverse [4 5 6 7] 2)))))
+
+(deftest test-get-item-reverse
+  (testing "Should return the right item"
+    (is (= 6 (get-it-reverse [4 5 6 7] 2))))
+  (testing "Should return nil when index does not exists"
+    (is (empty? (get-it-reverse [4 5 6 7] 5))))
+  (testing "Should return nil when list is empty"
+    (is (empty? (get-it-reverse [] 3)))))

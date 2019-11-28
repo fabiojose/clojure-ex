@@ -77,6 +77,15 @@
       (assoc-tx tx (use-limit tx account)))
     account))
 
+(defn get-it-reverse
+  "to get a item from a given list based on the index, reversely (right-to-left)"
+  [items index]
+  (get-in (vec (rseq items)) [(- index 1)]))
+
+; (defn high-frequency
+;   "to check if a given tx and authorized, meets hight-frequency-small-interval")
+;   [tx authorized frequency interval]
+
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
