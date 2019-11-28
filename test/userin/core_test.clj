@@ -58,7 +58,7 @@
 
 (deftest test-sufficient-limit
   (testing "Should return the new availableLimit and the authorized key with list of tx"
-    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}]} (sufficient-limit {:transaction {:amount 5 :time "2019-02-13T10:00:00.000Z"}} {:account {:availableLimit 10}}))))
+    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}]} (sufficient-limit {:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}} {:account {:availableLimit 10}}))))
   (testing "Should return the same account when has violations"
     (is (= {:account {:availableLimit 10} :violations []} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10} :violations []})))))
 
@@ -74,7 +74,7 @@
 
 (deftest test-get-item-reverse
   (testing "Should return the right item"
-    (is (= 6 (get-it-reverse [4 5 6 7] 2))))
+    (is (= 102 (get-it-reverse [100 101 102 104] 1))))
   (testing "Should return nil when index does not exists"
     (is (empty? (get-it-reverse [4 5 6 7] 5))))
   (testing "Should return nil when list is empty"
@@ -99,8 +99,8 @@
     (is (= {:account {:availableLimit 10}}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
-            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
-             {:transaction {:time (j/zoned-date-time "2019-11-28T09:56:00.000Z")}}]
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:56:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
             3
             2
             {:account {:availableLimit 10}}))))
@@ -124,8 +124,8 @@
     (is (= {:account {:availableLimit 10} :violations ["high-frequency-small-interval"]}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
-            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}
-             {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}]
             3
             2
             {:account {:availableLimit 10}}))))
@@ -133,8 +133,8 @@
     (is (= {:account {:availableLimit 10}}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
-            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}
-             {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}]
             4
             2
             {:account {:availableLimit 10}})))))

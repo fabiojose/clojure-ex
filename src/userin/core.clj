@@ -61,7 +61,7 @@
 (defn assoc-tx
   "associates a given tx in the authorized vector of given account"
   [tx account]
-  (assoc account :authorized (conj (get account :authorized) (parse-tx tx))))
+  (assoc account :authorized (conj (get account :authorized) tx)))
 
 (defn use-limit
   "to use the limit of given account to process the tx amount"
@@ -78,9 +78,11 @@
     account))
 
 (defn get-it-reverse
-  "to get a item from a given list based on the index, reversely (right-to-left)"
+  "to get a item from a given list based on the index (starting from zero), reversely"
   [items index]
-  (get-in (vec (rseq items)) [(- index 1)]))
+  (if (< (count items) index)
+    nil
+    (get-in (vec (reverse items)) [index])))
 
 (defn time-diff-tx
   "to return the elapsed time between two transactions"
@@ -99,14 +101,14 @@
 (defn high-frequency
   "to check if a given tx and authorized, meets high-frequency-small-interval"
   [tx authorized frequency interval account]
-  (if (<= (as-minutes (time-diff-tx (get-in authorized [(- frequency 2)]) tx) (+ interval 1)) interval)
+  (if (<= (as-minutes (time-diff-tx (get-it-reverse authorized (- frequency 2)) tx) (+ interval 1)) interval)
     (assoc account :violations ["high-frequency-small-interval"])
     account))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (sufficient-limit tx (card-active account)))
+  (sufficient-limit tx (high-frequency tx (get account :authorized) 3 2 (card-active account))))
 
 (defn already-initialized
   "to check if we already have an initialized account"
@@ -120,7 +122,7 @@
   [json account]
   (cond
     (contains? json :account) (already-initialized json account)
-    (contains? json :transaction) (authorize json account)
+    (contains? json :transaction) (authorize (parse-tx json) account)
     :else (throw (Exception. (str "unsupported json: " json)))))
 
 (defn read-all
