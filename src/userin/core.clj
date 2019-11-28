@@ -85,7 +85,9 @@
 (defn time-diff-tx
   "to return the elapsed time between two transactions"
   [txa txb]
-  (j/duration (get-in txa [:transaction :time]) (get-in txb [:transaction :time])))
+  (if (or (empty? txa) (empty? txb))
+    nil
+    (j/duration (get-in txa [:transaction :time]) (get-in txb [:transaction :time]))))
 
 ; (defn high-frequency
 ;   "to check if a given tx and authorized, meets hight-frequency-small-interval")
