@@ -112,6 +112,14 @@
             3
             2
             {:account {:availableLimit 10}}))))
+  (testing "Should return the account itself when authorized is nil"
+    (is (= {:account {:availableLimit 10}}
+           (high-frequency
+            {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+            nil
+            3
+            2
+            {:account {:availableLimit 10}}))))
   (testing "Should return violation when violate the constraint"
     (is (= {:account {:availableLimit 10} :violations ["high-frequency-small-interval"]}
            (high-frequency
