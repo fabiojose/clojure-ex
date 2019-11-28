@@ -90,6 +90,43 @@
 
 (deftest test-as-minutes
   (testing "Should return the value in minutes"
-    (is (= 2 (as-minutes (j/duration 120 :seconds)))))
-  (testing "Should return 0 when duration is nil"
-    (is (= 0 (as-minutes nil)))))
+    (is (= 2 (as-minutes (j/duration 120 :seconds) 0))))
+  (testing "Should return alternative value when duration is nil"
+    (is (= 0 (as-minutes nil 0)))))
+
+(deftest test-high-frequency
+  (testing "Should return the account itself when frequency is ok"
+    (is (= {:account {:availableLimit 10}}
+           (high-frequency
+            {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:56:00.000Z")}}]
+            3
+            2
+            {:account {:availableLimit 10}}))))
+  (testing "Should return the account itself when there is no authorized yet"
+    (is (= {:account {:availableLimit 10}}
+           (high-frequency
+            {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+            []
+            3
+            2
+            {:account {:availableLimit 10}}))))
+  (testing "Should return violation when violate the constraint"
+    (is (= {:account {:availableLimit 10} :violations ["high-frequency-small-interval"]}
+           (high-frequency
+            {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
+            3
+            2
+            {:account {:availableLimit 10}}))))
+  (testing "Should return the account itseld when there is no enogh authorized"
+    (is (= {:account {:availableLimit 10}}
+           (high-frequency
+            {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}
+             {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
+            4
+            2
+            {:account {:availableLimit 10}})))))

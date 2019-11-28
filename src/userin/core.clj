@@ -91,14 +91,17 @@
 
 (defn as-minutes
   "to return the minutes of given duration"
-  [duration]
+  [duration alternative]
   (if (nil? duration)
-    0
+    alternative
     (j/as duration :minutes)))
 
-; (defn high-frequency
-;   "to check if a given tx and authorized, meets hight-frequency-small-interval"
-;   [tx authorized frequency interval])
+(defn high-frequency
+  "to check if a given tx and authorized, meets high-frequency-small-interval"
+  [tx authorized frequency interval account]
+  (if (<= (as-minutes (time-diff-tx (get-in authorized [(- frequency 2)]) tx) (+ interval 1)) interval)
+    (assoc account :violations ["high-frequency-small-interval"])
+    account))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
