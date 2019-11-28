@@ -85,7 +85,7 @@
 (defn time-diff-tx
   "to return the elapsed time between two transactions"
   [txa txb]
-  (if (or (empty? txa) (empty? txb))
+  (if (or (nil? txa) (nil? txb))
     nil
     (j/duration (get-in txa [:transaction :time]) (get-in txb [:transaction :time]))))
 
