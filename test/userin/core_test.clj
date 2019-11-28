@@ -82,4 +82,8 @@
 
 (deftest test-time-diff-tx
   (testing "Should return the right amount of time"
-    (is (= 2 (j/as (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}} {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}) :minutes) ))))
+    (is (= 2 (j/as (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}} {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}) :minutes) )))
+  (testing "Should return nil when arg0 is nil"
+    (is (empty? (time-diff-tx nil {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}))))
+  (testing "Should return nil when arg1 is nil"
+    (is (empty? (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}} nil)))))
