@@ -87,3 +87,9 @@
     (is (empty? (time-diff-tx nil {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}))))
   (testing "Should return nil when arg1 is nil"
     (is (empty? (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}} nil)))))
+
+(deftest test-as-minutes
+  (testing "Should return the value in minutes"
+    (is (= 2 (as-minutes (j/duration 120 :seconds)))))
+  (testing "Should return 0 when duration is nil"
+    (is (= 0 (as-minutes nil)))))

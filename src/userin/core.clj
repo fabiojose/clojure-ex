@@ -89,9 +89,16 @@
     nil
     (j/duration (get-in txa [:transaction :time]) (get-in txb [:transaction :time]))))
 
+(defn as-minutes
+  "to return the minutes of given duration"
+  [duration]
+  (if (nil? duration)
+    0
+    (j/as duration :minutes)))
+
 ; (defn high-frequency
-;   "to check if a given tx and authorized, meets hight-frequency-small-interval")
-;   [tx authorized frequency interval]
+;   "to check if a given tx and authorized, meets hight-frequency-small-interval"
+;   [tx authorized frequency interval])
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
