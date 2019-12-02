@@ -105,14 +105,19 @@
     (assoc account :violations ["high-frequency-small-interval"])
     account))
 
-(defn similar-tx
-  "to return true if the given tx are similar (same merchant and amount)"
+(defn equals-tx
+  "to return true if the given tx are equals (same merchant and amount)"
   [tx1 tx2]
   (and (= (.toLowerCase (-> tx1 :transaction :merchant))
           (.toLowerCase (-> tx2 :transaction :merchant)))
 
        (= (-> tx1 :transaction :amount)
           (-> tx2 :transaction :amount))))
+
+(defn similar-tx
+  "to return the authorized transactions similar of given tx"
+  [tx authorized]
+  (filter (partial equals-tx tx) authorized))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
