@@ -144,6 +144,10 @@
    (is (= true (similar-tx
                 {:transaction {:merchant "Mer*" :amount 10}}
                 {:transaction {:merchant "Mer*" :amount 10}}))))
+  (testing "Should return true when tx are similar and merchant with diff cases"
+   (is (= true (similar-tx
+                {:transaction {:merchant "meR*" :amount 10}}
+                {:transaction {:merchant "Mer*" :amount 10}}))))
   (testing "Should return false when tx1 amount diff from tx2"
     (is (= false (similar-tx
                   {:transaction {:merchant "Mer*" :amount 10}}
