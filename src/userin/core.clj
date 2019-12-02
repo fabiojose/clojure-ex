@@ -119,6 +119,13 @@
   [tx authorized]
   (filter (partial equals-tx tx) authorized))
 
+(defn doubled-transaction
+  "to check if a given tx meets the doubled-transaction violation"
+  [tx authorized frequency interval account]
+  (if (<= (as-minutes (time-diff-tx (get-it-reverse (similar-tx tx authorized) (- frequency 1)) tx) (+ interval 1)) interval)
+    (assoc account :violations ["doubled-transaction"])
+    account))
+
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
