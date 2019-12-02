@@ -138,3 +138,17 @@
             4
             2
             {:account {:availableLimit 10}})))))
+
+(deftest test-simular-tx
+  (testing "Should return true when tx are similar"
+   (is (= true (similar-tx
+                {:transaction {:merchant "Mer*" :amount 10}}
+                {:transaction {:merchant "Mer*" :amount 10}}))))
+  (testing "Should return false when tx1 amount diff from tx2"
+    (is (= false (similar-tx
+                  {:transaction {:merchant "Mer*" :amount 10}}
+                  {:transaction {:merchant "Mer*" :amount 5}}))))
+  (testing "Should return false when tx1 merchant diff from tx2"
+    (is (= false (similar-tx
+                  {:transaction {:merchant "AMZ*" :amount 5}}
+                  {:transaction {:merchant "Mer*" :amount 5}})))))
