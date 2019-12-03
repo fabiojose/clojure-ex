@@ -1,0 +1,8 @@
+{ "account": { "activeCard": true, "availableLimit": 100 } }
+{ "transaction": { "merchant": "Burger King", "amount": 10,          "time": "2019-12-02T10:00:00.000Z" } }
+{ "transaction": { "merchant": "Habbib's", "amount": 20,             "time": "2019-12-02T10:05:00.000Z" } }
+{ "transaction": { "merchant": "Geek Zone", "amount": 10,            "time": "2019-12-02T10:15:00.000Z" } }
+{ "transaction": { "merchant": "Linux Mall", "amount": 10,           "time": "2019-12-02T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Amazon* ChiChin", "amount": 10,      "time": "2019-12-02T11:15:22.000Z" } }
+{ "transaction": { "merchant": "Amazon* ChiChin", "amount": 10,      "time": "2019-12-02T11:15:38.000Z" } }
+{ "transaction": { "merchant": "Amazon* ChiChin", "amount": 10,      "time": "2019-12-02T11:16:01.000Z" } }
