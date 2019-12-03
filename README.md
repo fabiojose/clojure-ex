@@ -3,7 +3,15 @@
 
 # userin
 
-A Clojure APP to read stdin until receive an empty line.
+A Clojure APP to read json entries from stdin until receive an empty line.
+
+Entries like that:
+
+```json
+{ "account": { "activeCard": true, "availableLimit": 100 } }
+{ "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }
+{ "transaction": { "merchant": "Habbib's", "amount": 80, "time": "2019-02-13T11:00:00.000Z" } }
+```
 
 ## Building & Run
 
