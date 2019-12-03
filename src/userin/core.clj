@@ -122,14 +122,14 @@
 (defn doubled-transaction
   "to check if a given tx meets the doubled-transaction violation"
   [tx authorized frequency interval account]
-  (if (<= (as-minutes (time-diff-tx (get-it-reverse (similar-tx tx authorized) (- frequency 1)) tx) (+ interval 1)) interval)
+  (if (<= (as-minutes (time-diff-tx (get-it-reverse (similar-tx tx authorized) (- frequency 2)) tx) (+ interval 1)) interval)
     (assoc account :violations ["doubled-transaction"])
     account))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (sufficient-limit tx (high-frequency tx (get account :authorized) 3 2 (card-active account))))
+  (sufficient-limit tx (doubled-transaction tx (get account :authorized) 2 2 (high-frequency tx (get account :authorized) 3 2 (card-active account)))))
 
 (defn already-initialized
   "to check if we already have an initialized account"

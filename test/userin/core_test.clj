@@ -210,8 +210,7 @@
     (is (= {:account {:availableLimit 10} :violations ["doubled-transaction"]}
            (doubled-transaction
             {:transaction {:merchant "Mer*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:02:00.000Z")}}
-            [{:transaction {:merchant "MEr*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:01:00.000Z")}}
-             {:transaction {:merchant "MEr*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:01:30.000Z")}}]
+            [{:transaction {:merchant "MEr*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:01:00.000Z")}}]
             2
             2
             {:account {:availableLimit 10}})))))
