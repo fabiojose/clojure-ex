@@ -33,18 +33,18 @@
   [account]
   (contains? account :violations))
 
+(def empty-violations (fnil conj []))
+
 (defn print-out
   "write the account as json in the console and return the account"
   [account]
-  (println (generate-string (dissoc account :authorized)))
+  (println
+   (generate-string
+    (update
+     (dissoc account :authorized)
+     :violations
+     empty-violations)))
   account)
-
-(defn print-when-violations
-  "write the account in the console when violations are present"
-  [account]
-  (if (has-violations account)
-    (print-out account)
-    account))
 
 (defn card-active
   "to check if a given account has an active card"
@@ -56,7 +56,10 @@
 (defn parse-tx
   "parses a given tx"
   [tx]
-  (assoc-in tx [:transaction :time] (j/zoned-date-time (get-in tx [:transaction :time]))))
+  (assoc-in
+   tx
+   [:transaction :time]
+   (j/zoned-date-time (get-in tx [:transaction :time]))))
 
 (defn assoc-tx
   "associates a given tx in the authorized vector of given account"
@@ -66,12 +69,15 @@
 (defn use-limit
   "to use the limit of given account to process the tx amount"
   [tx account]
-  (assoc-in account [:account :availableLimit] (- (limit-of account) (amount-of tx))))
+  (assoc-in
+   account
+   [:account :availableLimit]
+   (- (limit-of account) (amount-of tx))))
 
 (defn sufficient-limit
   "to check if a given account has sufficient limit to process the given tx"
   [tx account]
-  (if (not (contains? account :violations))
+  (if (not (has-violations account))
     (if (< (limit-of account) (amount-of tx))
       (assoc account :violations ["insufficient-limit"])
       (assoc-tx tx (use-limit tx account)))
@@ -89,7 +95,9 @@
   [txa txb]
   (if (or (nil? txa) (nil? txb))
     nil
-    (j/duration (get-in txa [:transaction :time]) (get-in txb [:transaction :time]))))
+    (j/duration
+     (get-in txa [:transaction :time])
+     (get-in txb [:transaction :time]))))
 
 (defn as-minutes
   "to return the minutes of given duration"
@@ -101,7 +109,15 @@
 (defn high-frequency
   "to check if a given tx and authorized, meets high-frequency-small-interval"
   [tx authorized frequency interval account]
-  (if (<= (as-minutes (time-diff-tx (get-it-reverse authorized (- frequency 2)) tx) (+ interval 1)) interval)
+  (if (<=
+       (as-minutes
+        (time-diff-tx
+         (get-it-reverse
+           authorized
+           (- frequency 2))
+         tx)
+        (+ interval 1))
+       interval)
     (assoc account :violations ["high-frequency-small-interval"])
     account))
 
@@ -122,14 +138,34 @@
 (defn doubled-transaction
   "to check if a given tx meets the doubled-transaction violation"
   [tx authorized frequency interval account]
-  (if (<= (as-minutes (time-diff-tx (get-it-reverse (similar-tx tx authorized) (- frequency 2)) tx) (+ interval 1)) interval)
+  (if (<=
+       (as-minutes
+        (time-diff-tx
+         (get-it-reverse
+          (similar-tx tx authorized)
+          (- frequency 2))
+         tx)
+        (+ interval 1))
+       interval)
     (assoc account :violations ["doubled-transaction"])
     account))
 
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
-  (sufficient-limit tx (doubled-transaction tx (get account :authorized) 2 2 (high-frequency tx (get account :authorized) 3 2 (card-active account)))))
+  (sufficient-limit
+   tx
+   (doubled-transaction
+    tx
+    (get account :authorized)
+    2
+    2
+    (high-frequency
+     tx
+     (get account :authorized)
+     3
+     2
+     (card-active account)))))
 
 (defn already-initialized
   "to check if we already have an initialized account"
@@ -150,15 +186,13 @@
   "to read stdin until its end"
   []
   (loop [line (read-line) account nil]
-    (println account)
     (when (is-a-text line)
-      ;;(println line account)
-      (recur
-       (read-line)
-       (print-when-violations
-        (decide
-         (json-parse line)
-         account))))))
+     (recur
+      (read-line)
+      (print-out
+       (decide
+        (json-parse line)
+        account))))))
 
 (defn -main
   "the main function"
