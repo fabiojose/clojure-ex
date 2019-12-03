@@ -33,44 +33,73 @@
 
 (deftest test-parse-tx
   (testing "Should parse the time field"
-    (is (= {:transaction {:time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}} (parse-tx {:transaction {:time "2019-02-13T10:00:00.000Z"}})))))
+    (is (=
+         {:transaction
+          {:time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}
+         (parse-tx {:transaction {:time "2019-02-13T10:00:00.000Z"}})))))
 
 (deftest test-has-violations
   (testing "Should return true when has :violations"
     (is (= (has-violations {:account {} :violations ()}) true))))
 
-(deftest test-print-when-violations
-  (testing "Should return the account after print"
-    (is (= (print-when-violations {:account {}}) {:account {}}))
-    (is (= (print-when-violations {:account {} :violations ()}) {:account {} :violations ()}))))
-
 (deftest test-card-active
   (testing "Should return the account when card is active"
-    (is (= (card-active {:account {:activeCard true}}) {:account {:activeCard true}}))))
+    (is (=
+         (card-active
+          {:account {:activeCard true}})
+         {:account {:activeCard true}}))))
 
 (deftest test-card-inactive
   (testing "Should return violations when card is inactive"
-    (is (= (card-active {:account {:activeCard false}}) {:account {:activeCard false} :violations ["card-not-active"]}))))
+    (is (=
+         (card-active
+          {:account {:activeCard false}})
+         {:account {:activeCard false} :violations ["card-not-active"]}))))
 
 (deftest test-use-limit
   (testing "Should return the available limit after usage"
-    (is (= (use-limit {:transaction {:amount 5}} {:account {:availableLimit 10}}) {:account {:availableLimit 5}}))))
+    (is (=
+         (use-limit
+          {:transaction {:amount 5}}
+          {:account {:availableLimit 10}})
+         {:account {:availableLimit 5}}))))
 
 (deftest test-sufficient-limit
   (testing "Should return the new availableLimit and the authorized key with list of tx"
-    (is (= {:account {:availableLimit 5} :authorized [{:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}]} (sufficient-limit {:transaction {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}} {:account {:availableLimit 10}}))))
+    (is (=
+         {:account {:availableLimit 5} :authorized
+          [{:transaction
+            {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}]}
+         (sufficient-limit
+          {:transaction
+           {:amount 5 :time (j/zoned-date-time "2019-02-13T10:00:00.000Z")}}
+          {:account {:availableLimit 10}}))))
   (testing "Should return the same account when has violations"
-    (is (= {:account {:availableLimit 10} :violations []} (sufficient-limit {:transaction {:amount 5}} {:account {:availableLimit 10} :violations []})))))
+    (is (=
+         {:account {:availableLimit 10} :violations []}
+         (sufficient-limit
+          {:transaction {:amount 5}}
+          {:account {:availableLimit 10} :violations []})))))
 
 (deftest test-no-sufficient-limit
   (testing "Should return violations when has no sufficient limit"
-    (is (= {:account {:availableLimit 10} :violations ["insufficient-limit"]} (sufficient-limit {:transaction {:amount 15}} {:account {:availableLimit 10}})))))
+    (is (=
+         {:account {:availableLimit 10} :violations ["insufficient-limit"]}
+         (sufficient-limit
+          {:transaction {:amount 15}}
+          {:account {:availableLimit 10}})))))
 
 (deftest test-already-initialized
   (testing "Should return violations when account already exists"
-    (is (= {:account {:activeCard true} :violations ["account-already-initialized"]} (already-initialized {:account {:activeCard true}} {:account {:activeCard true}}))))
+    (is (=
+         {:account {:activeCard true}
+          :violations ["account-already-initialized"]}
+         (already-initialized
+          {:account {:activeCard true}} {:account {:activeCard true}}))))
   (testing "Should return the json when account is nil"
-    (is (= {:account {:activeCard true}} (already-initialized {:account {:activeCard true}} nil)))))
+    (is (=
+         {:account {:activeCard true}}
+         (already-initialized {:account {:activeCard true}} nil)))))
 
 (deftest test-get-item-reverse
   (testing "Should return the right item"
@@ -82,11 +111,25 @@
 
 (deftest test-time-diff-tx
   (testing "Should return the right amount of time"
-    (is (= 2 (j/as (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}} {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}) :minutes) )))
+    (is (=
+         2
+         (j/as
+          (time-diff-tx
+           {:transaction
+            {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
+           {:transaction
+            {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}) :minutes) )))
   (testing "Should return nil when arg0 is nil"
-    (is (empty? (time-diff-tx nil {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}))))
+    (is (empty?
+         (time-diff-tx
+          nil
+          {:transaction
+           {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}))))
   (testing "Should return nil when arg1 is nil"
-    (is (empty? (time-diff-tx {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}} nil)))))
+    (is (empty?
+         (time-diff-tx
+          {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}
+          nil)))))
 
 (deftest test-as-minutes
   (testing "Should return the value in minutes"
@@ -192,25 +235,39 @@
     (is (= {:account {:availableLimit 10}}
            (doubled-transaction
             {:transaction {:merchant "Mer*" :amount 5}}
-            [{:transaction {:merchant "Mer*" :amount 45 :time (j/zoned-date-time "2019-12-02T10:00:50.000Z")}}
-             {:transaction {:merchant "Mer*" :amount 34 :time (j/zoned-date-time "2019-12-02T10:00:00.000Z")}}
-             {:transaction {:merchant "Mer*" :amount 33 :time (j/zoned-date-time "2019-12-02T10:00:50.000Z")}}]
+            [{:transaction
+              {:merchant "Mer*" :amount 45
+               :time (j/zoned-date-time "2019-12-02T10:00:50.000Z")}}
+             {:transaction
+              {:merchant "Mer*" :amount 34
+               :time (j/zoned-date-time "2019-12-02T10:00:00.000Z")}}
+             {:transaction
+              {:merchant "Mer*" :amount 33
+               :time (j/zoned-date-time "2019-12-02T10:00:50.000Z")}}]
             2
             2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when interval is enogh"
     (is (= {:account {:availableLimit 10}}
            (doubled-transaction
-            {:transaction {:merchant "Mer*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:03:00.000Z")}}
-            [{:transaction {:merchant "Mer*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:00:00.000Z")}}]
+            {:transaction
+             {:merchant "Mer*" :amount 5
+              :time (j/zoned-date-time "2019-12-02T10:03:00.000Z")}}
+            [{:transaction
+              {:merchant "Mer*" :amount 5
+               :time (j/zoned-date-time "2019-12-02T10:00:00.000Z")}}]
             2
             2
             {:account {:availableLimit 10}}))))
   (testing "Should return violation when violate the constraint"
     (is (= {:account {:availableLimit 10} :violations ["doubled-transaction"]}
            (doubled-transaction
-            {:transaction {:merchant "Mer*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:02:00.000Z")}}
-            [{:transaction {:merchant "MEr*" :amount 5 :time (j/zoned-date-time "2019-12-02T10:01:00.000Z")}}]
+            {:transaction
+             {:merchant "Mer*" :amount 5
+              :time (j/zoned-date-time "2019-12-02T10:02:00.000Z")}}
+            [{:transaction
+              {:merchant "MEr*" :amount 5
+               :time (j/zoned-date-time "2019-12-02T10:01:00.000Z")}}]
             2
             2
             {:account {:availableLimit 10}})))))
