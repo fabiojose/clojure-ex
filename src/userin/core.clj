@@ -153,7 +153,12 @@
     (println account)
     (when (is-a-text line)
       ;;(println line account)
-      (recur (read-line) (print-when-violations (decide (json-parse line) account))))))
+      (recur
+       (read-line)
+       (print-when-violations
+        (decide
+         (json-parse line)
+         account))))))
 
 (defn -main
   "the main function"
