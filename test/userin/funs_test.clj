@@ -21,3 +21,9 @@
     (is (empty? (get-it-reverse [4 5 6 7] 5))))
   (testing "Should return nil when list is empty"
     (is (empty? (get-it-reverse [] 3)))))
+
+(deftest test-as-minutes
+  (testing "Should return the value in minutes"
+    (is (= 2 (as-minutes (j/duration 120 :seconds) 0))))
+  (testing "Should return alternative value when duration is nil"
+    (is (= 0 (as-minutes nil 0)))))

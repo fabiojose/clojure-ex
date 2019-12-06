@@ -83,13 +83,6 @@
      (get-in txa [:transaction :time])
      (get-in txb [:transaction :time]))))
 
-(defn as-minutes
-  "to return the minutes of given duration"
-  [duration alternative]
-  (if (nil? duration)
-    alternative
-    (j/as duration :minutes)))
-
 (defn high-frequency
   "to check if a given tx and authorized, meets high-frequency-small-interval"
   [tx authorized frequency interval account]

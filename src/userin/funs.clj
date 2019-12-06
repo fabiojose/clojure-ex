@@ -18,3 +18,10 @@
   (if (< (count items) index)
     nil
     (get-in (vec (reverse items)) [index])))
+
+(defn as-minutes
+  "to return the minutes of given duration"
+  [duration alternative]
+  (if (nil? duration)
+    alternative
+    (j/as duration :minutes)))

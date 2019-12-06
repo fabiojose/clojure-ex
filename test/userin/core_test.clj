@@ -113,12 +113,6 @@
           {:transaction {:time (j/zoned-date-time "2019-11-28T10:02:00.000Z")}}
           nil)))))
 
-(deftest test-as-minutes
-  (testing "Should return the value in minutes"
-    (is (= 2 (as-minutes (j/duration 120 :seconds) 0))))
-  (testing "Should return alternative value when duration is nil"
-    (is (= 0 (as-minutes nil 0)))))
-
 (deftest test-high-frequency
   (testing "Should return the account itself when frequency is ok"
     (is (= {:account {:availableLimit 10}}
