@@ -91,14 +91,6 @@
          {:account {:activeCard true}}
          (already-initialized {:account {:activeCard true}} nil)))))
 
-(deftest test-get-item-reverse
-  (testing "Should return the right item"
-    (is (= 102 (get-it-reverse [100 101 102 104] 1))))
-  (testing "Should return nil when index does not exists"
-    (is (empty? (get-it-reverse [4 5 6 7] 5))))
-  (testing "Should return nil when list is empty"
-    (is (empty? (get-it-reverse [] 3)))))
-
 (deftest test-time-diff-tx
   (testing "Should return the right amount of time"
     (is (=

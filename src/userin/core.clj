@@ -74,13 +74,6 @@
       (assoc-tx tx (use-limit tx account)))
     account))
 
-(defn get-it-reverse
-  "to get a item from a given list based on the index (starting from zero), reversely"
-  [items index]
-  (if (< (count items) index)
-    nil
-    (get-in (vec (reverse items)) [index])))
-
 (defn time-diff-tx
   "to return the elapsed time between two transactions"
   [txa txb]
