@@ -1,17 +1,8 @@
 (ns userin.core
   (:gen-class)
   (:require [cheshire.core :refer :all])
-  (:require [java-time :as j]))
-
-(defn json-parse
-  "to parse given value as json"
-  [value]
-  (parse-string value true))
-
-(defn is-a-text
-  "to check if a given arg is a valid text"
-  [text]
-  (and (not (= text "")) (not (= text nil))))
+  (:require [java-time :as j])
+  (:require [userin.funs :refer :all]))
 
 (defn is-account
   "to check if a given json is an account object"

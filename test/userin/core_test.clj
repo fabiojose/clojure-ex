@@ -1,22 +1,12 @@
 (ns userin.core-test
   (:require [clojure.test :refer :all]
             [userin.core :refer :all]
-            [java-time :as j]))
-
-(deftest test-json-parse
-  (testing "Should return a parsed json"
-    (is (= {:name "clojure"} (json-parse "{\"name\" : \"clojure\"}"))))
-  (testing "Should throw exception on invalid json"
-    (is (thrown? Exception (json-parse "llç")))))
+            [java-time :as j]
+            [userin.funs :refer :all]))
 
 (deftest test-decide
   (testing "Should throw exception on unsupported json"
     (is (thrown? Exception (decide {:strange "strange json"})))))
-
-(deftest test-is-a-text
-  (testing "Should return false when text is not valid"
-    (is (= (is-a-text "") false))
-    (is (= (is-a-text nil) false))))
 
 (deftest test-is-account
   (testing "Should return false when json does not contains :account"
