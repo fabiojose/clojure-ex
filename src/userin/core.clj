@@ -79,14 +79,19 @@
   [tx account]
   account)
 
-(defn time-diff-tx
+(defmulti time-diff-tx
   "to return the elapsed time between two transactions"
+  (fn [txa txb] (or (nil? txa) (nil? txb))))
+
+(defmethod time-diff-tx true
   [txa txb]
-  (if (or (nil? txa) (nil? txb))
-    nil
-    (j/duration
-     (get-in txa [:transaction :time])
-     (get-in txb [:transaction :time]))))
+  nil)
+
+(defmethod time-diff-tx false
+  [txa txb]
+  (j/duration
+   (get-in txa [:transaction :time])
+   (get-in txb [:transaction :time])))
 
 (defn high-frequency-custom
   "to check if a given tx and authorized, using custom parameters"
