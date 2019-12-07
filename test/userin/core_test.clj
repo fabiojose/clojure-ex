@@ -4,9 +4,9 @@
             [java-time :as j]
             [userin.funs :refer :all]))
 
-(deftest test-decide
+(deftest test-process
   (testing "Should throw exception on unsupported json"
-    (is (thrown? Exception (decide {:strange "strange json"})))))
+    (is (thrown? Exception (process {:strange "strange json"})))))
 
 (deftest test-is-account
   (testing "Should return false when json does not contains :account"

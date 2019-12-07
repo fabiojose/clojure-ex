@@ -155,13 +155,22 @@
     (assoc account :violations ["account-already-initialized"])
     json))
 
-(defn decide
+(defmulti process
   "to decide what gonna do with parsed json"
+  (fn [json account]
+    (get (vec (map key json)) 0)))
+
+(defmethod process :account
   [json account]
-  (cond
-    (contains? json :account) (already-initialized json account)
-    (contains? json :transaction) (authorize (parse-tx json) account)
-    :else (throw (Exception. (str "unsupported json: " json)))))
+  (already-initialized json account))
+
+(defmethod process :transaction
+  [json account]
+  (authorize (parse-tx json) account))
+
+(defmethod process nil
+  [json account]
+  (throw (Exception. (str "unsupported json: " json))))
 
 (defn read-all
   "to read stdin until its end"
@@ -171,7 +180,7 @@
      (recur
       (read-line)
       (print-out
-       (decide
+       (process
         (json-parse line)
         account))))))
 
