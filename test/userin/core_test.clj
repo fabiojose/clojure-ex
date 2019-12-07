@@ -120,24 +120,18 @@
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
             [{:transaction {:time (j/zoned-date-time "2019-11-28T09:56:00.000Z")}}
              {:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
-            3
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when there is no authorized yet"
     (is (= {:account {:availableLimit 10}}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
             []
-            3
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when authorized is nil"
     (is (= {:account {:availableLimit 10}}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
             nil
-            3
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return violation when violate the constraint"
     (is (= {:account {:availableLimit 10} :violations ["high-frequency-small-interval"]}
@@ -145,17 +139,12 @@
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
             [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
              {:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}]
-            3
-            2
             {:account {:availableLimit 10}}))))
-  (testing "Should return the account itseld when there is no enogh authorized"
+  (testing "Should return the account itself when there is no enogh authorized"
     (is (= {:account {:availableLimit 10}}
            (high-frequency
             {:transaction {:time (j/zoned-date-time "2019-11-28T10:00:00.000Z")}}
-            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}
-             {:transaction {:time (j/zoned-date-time "2019-11-28T09:59:00.000Z")}}]
-            4
-            2
+            [{:transaction {:time (j/zoned-date-time "2019-11-28T09:58:00.000Z")}}]
             {:account {:availableLimit 10}})))))
 
 (deftest test-equals-tx
@@ -196,16 +185,12 @@
            (doubled-transaction
             {:transaction {:merchant "Mer*" :amount 5}}
             nil
-            2
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when authorized is empty"
     (is (= {:account {:availableLimit 10}}
            (doubled-transaction
             {:transaction {:merchant "Mer*" :amount 5}}
             []
-            2
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when there is no similar tx"
     (is (= {:account {:availableLimit 10}}
@@ -220,8 +205,6 @@
              {:transaction
               {:merchant "Mer*" :amount 33
                :time (j/zoned-date-time "2019-12-02T10:00:50.000Z")}}]
-            2
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return the account itself when interval is enogh"
     (is (= {:account {:availableLimit 10}}
@@ -232,8 +215,6 @@
             [{:transaction
               {:merchant "Mer*" :amount 5
                :time (j/zoned-date-time "2019-12-02T10:00:00.000Z")}}]
-            2
-            2
             {:account {:availableLimit 10}}))))
   (testing "Should return violation when violate the constraint"
     (is (= {:account {:availableLimit 10} :violations ["doubled-transaction"]}
@@ -244,6 +225,4 @@
             [{:transaction
               {:merchant "MEr*" :amount 5
                :time (j/zoned-date-time "2019-12-02T10:01:00.000Z")}}]
-            2
-            2
             {:account {:availableLimit 10}})))))

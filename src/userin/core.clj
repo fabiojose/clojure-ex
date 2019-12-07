@@ -83,9 +83,9 @@
      (get-in txa [:transaction :time])
      (get-in txb [:transaction :time]))))
 
-(defn high-frequency
-  "to check if a given tx and authorized, meets high-frequency-small-interval"
-  [tx authorized frequency interval account]
+(defn high-frequency-custom
+  "to check if a given tx and authorized, using custom parameters"
+  [frequency interval tx authorized account]
   (if (<=
        (as-minutes
         (time-diff-tx
@@ -97,6 +97,10 @@
        interval)
     (assoc account :violations ["high-frequency-small-interval"])
     account))
+
+(def high-frequency
+  "to check if a given tx and authorized, meets high-frequency-small-interval"
+  (partial high-frequency-custom 3 2))
 
 (defn equals-tx
   "to return true if the given tx are equals (same merchant and amount)"
@@ -112,9 +116,9 @@
   [tx authorized]
   (filter (partial equals-tx tx) authorized))
 
-(defn doubled-transaction
-  "to check if a given tx meets the doubled-transaction violation"
-  [tx authorized frequency interval account]
+(defn doubled-transaction-custom
+  "to check if a given tx meets the doubled-transaction violation, using custom parameters"
+  [frequency interval tx authorized account]
   (if (<=
        (as-minutes
         (time-diff-tx
@@ -127,6 +131,10 @@
     (assoc account :violations ["doubled-transaction"])
     account))
 
+(def doubled-transaction
+  "to check if a given tx meets the doubled-transaction violation"
+  (partial doubled-transaction-custom 2 2))
+
 (defn authorize
   "to check if a given tx should be authorized over an account"
   [tx account]
@@ -135,13 +143,9 @@
    (doubled-transaction
     tx
     (get account :authorized)
-    2
-    2
     (high-frequency
      tx
      (get account :authorized)
-     3
-     2
      (card-active account)))))
 
 (defn already-initialized
