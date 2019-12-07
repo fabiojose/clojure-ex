@@ -65,14 +65,19 @@
    [:account :availableLimit]
    (- (limit-of account) (amount-of tx))))
 
-(defn sufficient-limit
+(defmulti sufficient-limit
   "to check if a given account has sufficient limit to process the given tx"
+  (fn [tx account] (has-violations account)))
+
+(defmethod sufficient-limit false
   [tx account]
-  (if (not (has-violations account))
-    (if (< (limit-of account) (amount-of tx))
-      (assoc account :violations ["insufficient-limit"])
-      (assoc-tx tx (use-limit tx account)))
-    account))
+  (if (< (limit-of account) (amount-of tx))
+    (assoc account :violations ["insufficient-limit"])
+    (assoc-tx tx (use-limit tx account))))
+
+(defmethod sufficient-limit true
+  [tx account]
+  account)
 
 (defn time-diff-tx
   "to return the elapsed time between two transactions"
