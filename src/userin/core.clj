@@ -4,11 +4,6 @@
   (:require [java-time :as j])
   (:require [userin.funs :refer :all]))
 
-(defn is-account
-  "to check if a given json is an account object"
-  [json]
-  (contains? json :account))
-
 (defn limit-of
   "to get the available limit of given account"
   [account]

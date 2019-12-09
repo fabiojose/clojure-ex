@@ -8,11 +8,6 @@
   (testing "Should throw exception on unsupported json"
     (is (thrown? Exception (process {:strange "strange json"})))))
 
-(deftest test-is-account
-  (testing "Should return false when json does not contains :account"
-    (is (= (is-account {:tx "nope"}) false))
-    (is (= (is-account {:account "yep"})))))
-
 (deftest test-limit-of-account
   (testing "Should return the availableLimit of account"
     (is (= (limit-of {:account {:availableLimit 100}}) 100))))
