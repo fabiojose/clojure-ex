@@ -7,7 +7,7 @@
   [value]
   (parse-string value true))
 
-(defn is-a-text
+(defn text?
   "to check if a given arg is a valid text"
   [text]
   (and (not (= text "")) (not (= text nil))))

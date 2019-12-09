@@ -9,10 +9,10 @@
   (testing "Should throw exception on invalid json"
     (is (thrown? Exception (json-parse "llç")))))
 
-(deftest test-is-a-text
+(deftest test-text?
   (testing "Should return false when text is not valid"
-    (is (= (is-a-text "") false))
-    (is (= (is-a-text nil) false))))
+    (is (= (text? "") false))
+    (is (= (text? nil) false))))
 
 (deftest test-get-item-reverse
   (testing "Should return the right item"

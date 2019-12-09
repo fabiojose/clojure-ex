@@ -186,7 +186,7 @@
   "to read stdin until its end"
   []
   (loop [line (read-line) account nil]
-    (when (is-a-text line)
+    (when (text? line)
      (recur
       (read-line)
       (print-out
