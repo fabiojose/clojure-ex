@@ -21,7 +21,7 @@
 
 (def empty-violations (fnil conj []))
 
-(defn print-out
+(defn print-out!
   "write the account as json in the console and return the account"
   [account]
   (println
@@ -177,14 +177,14 @@
   [json account]
   (throw (Exception. (str "unsupported json: " json))))
 
-(defn read-all
+(defn read-all!
   "to read stdin until its end"
   []
   (loop [line (read-line) account nil]
     (when (text? line)
      (recur
       (read-line)
-      (print-out
+      (print-out!
        (process
         (json-parse line)
         account))))))
@@ -192,4 +192,4 @@
 (defn -main
   "the main function"
   [& args]
-  (read-all))
+  (read-all!))
